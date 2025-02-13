@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Treasury Bill Calculator</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        text-align: center;
+        padding: 20px;
+        margin: 0;
+    }
+
+    .container {
+        max-width: 400px;
+        width: 90%;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    input, button {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    button {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    button:hover {
+        background-color: #218838;
+    }
+
+    .result {
+        font-weight: bold;
+        margin-top: 20px;
+        font-size: 18px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+        .container {
+            width: 95%;
+            padding: 15px;
+        }
+
+        input, button {
+            font-size: 14px;
+            padding: 10px;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <h2>Treasury Bill Interest Calculator</h2>
+        <label>Principal Amount (GHS):</label>
+        <input type="number" id="principal" placeholder="Enter amount" required>
+
+        <label>Annual Interest Rate (%):</label>
+        <input type="number" id="rate" value="27" required>
+
+        <label>Investment Duration (Days):</label>
+        <input type="number" id="days" placeholder="Enter days" required>
+
+        <button onclick="calculateInterest()">Calculate</button>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+    function formatNumber(num) {
+        return num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function calculateInterest() {
+        let principal = parseFloat(document.getElementById("principal").value);
+        let rate = parseFloat(document.getElementById("rate").value);
+        let days = parseInt(document.getElementById("days").value);
+
+        if (isNaN(principal) || isNaN(rate) || isNaN(days) || principal <= 0 || days <= 0) {
+            document.getElementById("result").innerHTML = "Please enter valid values.";
+            return;
+        }
+
+        let interest = (principal * rate * days) / (100 * 365);
+        let totalAmount = principal + interest;
+
+        document.getElementById("result").innerHTML = `
+            <p>Interest Earned: <strong>GHS ${formatNumber(interest)}</strong></p>
+            <p>Total Amount After ${days} Days: <strong>GHS ${formatNumber(totalAmount)}</strong></p>
+        `;
+    }
+</script>
+
+</body>
+</html>

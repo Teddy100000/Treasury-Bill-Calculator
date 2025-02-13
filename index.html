@@ -2,173 +2,138 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Best Treasury Bill Calculator in Ghana - Calculate your investment returns quickly.">
-    <meta name="keywords" content="treasury bill calculator, investment calculator Ghana, T-bill returns">
-    <title>Treasury Bill Calculator - AKQB Solutions</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treasury Bill Calculator & Currency Converter</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: white;
             text-align: center;
             margin: 0;
             padding: 20px;
+            background: #f4f4f4;
         }
         .container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .box {
             background: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             max-width: 400px;
-            margin: auto;
+            flex: 1;
+            min-width: 300px;
         }
-        h1 {
-            color: #333;
-        }
-        input, select, button {
+        select, input, button {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
-            border: none;
             border-radius: 5px;
+            border: 1px solid #ddd;
         }
         button {
-            background: #4a90e2;
+            background: #4CAF50;
             color: white;
             cursor: pointer;
             font-size: 16px;
         }
         button:hover {
-            background: #357ABD;
-        }
-        .results {
-            margin-top: 20px;
-            font-size: 18px;
-        }
-        .menu-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #ff6f61;
-            color: white;
-            padding: 15px;
-            border: none;
-            border-radius: 50%;
-            font-size: 18px;
-            cursor: pointer;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-        }
-        .menu {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-            display: none;
-            flex-direction: column;
-        }
-        .menu a {
-            padding: 10px 15px;
-            text-decoration: none;
-            color: #333;
-            border-bottom: 1px solid #ddd;
-            display: block;
-            text-align: left;
-        }
-        .menu a:last-child {
-            border-bottom: none;
-        }
-        .menu a:hover {
-            background: #f7f7f7;
+            background: #45a049;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Treasury Bill Calculator</h1>
-        <label>Investment Amount (GHS):</label>
-        <input type="number" id="investment" placeholder="Enter amount">
-
-        <label>Annual Interest Rate (%):</label>
-        <input type="number" id="rate" value="27">
-
-        <label>Duration:</label>
-        <select id="months">
-            <option value="3">3 Months</option>
-            <option value="6">6 Months</option>
-            <option value="12">12 Months</option>
-        </select>
-
-        <button onclick="calculateReturn()">Calculate</button>
-
-        <div class="results">
+        <!-- Treasury Bill Calculator -->
+        <div class="box">
+            <h1>Treasury Bill Calculator</h1>
+            <label>Investment Amount (GHS):</label>
+            <input type="number" id="investment" placeholder="Enter amount">
+            <label>Annual Interest Rate (%):</label>
+            <input type="number" id="rate" value="27">
+            <label>Duration (Months):</label>
+            <select id="months">
+                <option value="3">3 Months</option>
+                <option value="6">6 Months</option>
+                <option value="12">12 Months</option>
+            </select>
+            <button onclick="calculateReturn()">Calculate</button>
             <h2>Original Investment: <span id="originalInvestment"></span></h2>
             <h2>Interest Earned: <span id="interestEarned"></span></h2>
-            <h2>Total Payout: <span id="totalPayout"></span></h2>
         </div>
-        
-        <div class="share-buttons">
-            <a href="#" onclick="shareOnSocial('twitter')">Share on Twitter</a>
-            <a href="#" onclick="shareOnSocial('facebook')">Share on Facebook</a>
+
+        <!-- Currency Converter -->
+        <div class="box">
+            <h1>Live Currency Converter</h1>
+            <label>Amount:</label>
+            <input type="number" id="amount" placeholder="Enter amount" value="1">
+
+            <label>From:</label>
+            <select id="fromCurrency">
+                <option value="GHS">Ghana Cedi (GHS)</option>
+                <option value="USD">US Dollar (USD)</option>
+                <option value="GBP">British Pound (GBP)</option>
+                <option value="CAD">Canadian Dollar (CAD)</option>
+                <option value="EUR">Euro (EUR)</option>
+                <option value="NGN">Nigerian Naira (NGN)</option>
+            </select>
+
+            <label>To:</label>
+            <select id="toCurrency">
+                <option value="USD">US Dollar (USD)</option>
+                <option value="GHS">Ghana Cedi (GHS)</option>
+                <option value="GBP">British Pound (GBP)</option>
+                <option value="CAD">Canadian Dollar (CAD)</option>
+                <option value="EUR">Euro (EUR)</option>
+                <option value="NGN">Nigerian Naira (NGN)</option>
+            </select>
+
+            <button onclick="convertCurrency()">Convert</button>
+            <h2>Converted Amount: <span id="result"></span></h2>
         </div>
-        
-        <form id="newsletter">
-            <input type="email" placeholder="Enter your email" required>
-            <button type="submit">Subscribe</button>
-        </form>
-    </div>
-    
-    <footer>
-        © AKQB Solutions 2025 | <a href="https://wa.me/YOUR_NUMBER" target="_blank">WhatsApp Support</a>
-    </footer>
-
-    <!-- Floating Menu Button -->
-    <button class="menu-button" onclick="toggleMenu()">☰</button>
-
-    <!-- Floating Menu -->
-    <div class="menu" id="menu">
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
-        <a href="#">Calculator</a>
     </div>
 
     <script>
         function calculateReturn() {
             let investment = parseFloat(document.getElementById("investment").value);
             let rate = parseFloat(document.getElementById("rate").value);
-            let months = parseInt(document.getElementById("months").value);
-
+            let months = parseFloat(document.getElementById("months").value);
             let interest = (investment * rate * months) / (12 * 100);
-            let totalPayout = investment + interest;
-
-            document.getElementById("originalInvestment").innerText = investment.toLocaleString("en-US", { style: "currency", currency: "GHS" });
-            document.getElementById("interestEarned").innerText = interest.toLocaleString("en-US", { style: "currency", currency: "GHS" });
-            document.getElementById("totalPayout").innerText = totalPayout.toLocaleString("en-US", { style: "currency", currency: "GHS" });
+            document.getElementById("originalInvestment").innerText = `${investment} GHS`;
+            document.getElementById("interestEarned").innerText = `${interest.toFixed(2)} GHS`;
         }
 
-        function shareOnSocial(platform) {
-            let url = encodeURIComponent(window.location.href);
-            let text = encodeURIComponent("Check out this Treasury Bill Calculator!");
-            if (platform === 'twitter') {
-                window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
-            } else if (platform === 'facebook') {
-                window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
-            }
-        }
+        function convertCurrency() {
+            let amount = document.getElementById("amount").value;
+            let fromCurrency = document.getElementById("fromCurrency").value;
+            let toCurrency = document.getElementById("toCurrency").value;
+            let apiKey = "YOUR_VALID_API_KEY";
+            let url = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/${fromCurrency}`;
 
-        function toggleMenu() {
-            let menu = document.getElementById("menu");
-            menu.style.display = menu.style.display === "block" ? "none" : "block";
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.result === "success") {
+                        let rate = data.conversion_rates[toCurrency];
+                        let convertedAmount = (amount * rate).toFixed(2);
+                        document.getElementById("result").innerText = `${convertedAmount} ${toCurrency}`;
+                    } else {
+                        document.getElementById("result").innerText = "Error fetching exchange rate. Please try again later.";
+                    }
+                })
+                .catch(error => {
+                    document.getElementById("result").innerText = "Failed to fetch data. Check your API key and internet connection.";
+                    console.error("Error fetching exchange rate:", error);
+                });
         }
-
-        fetch('https://v6.exchangerate-api.com/v6/YOUR_API_KEY/latest/GHS')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("exchangeRate").innerText = `1 GHS = ${data.conversion_rates.USD} USD`;
-        });
     </script>
 </body>
 </html>
